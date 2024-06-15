@@ -38,6 +38,7 @@ import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.header.Headers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -59,6 +60,7 @@ import static java.util.function.Predicate.not;
 @Service
 public final class KafkaMonitorImpl implements KafkaMonitor {
   private static final Logger LOG = LoggerFactory.getLogger(KafkaMonitorImpl.class);
+  private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
   private final KafkaHighLevelConsumer highLevelConsumer;
 
@@ -417,5 +419,12 @@ public final class KafkaMonitorImpl implements KafkaMonitor {
       .map(offsets -> offsets.forTopics(topics))
       .filter(not(ConsumerGroupOffsets::isEmpty))
       .collect(Collectors.toList());
+  }
+
+  public String hashPassword(String password) {
+    if (password == null || password.isEmpty()) {
+      throw new IllegalArgumentException("Password cannot be null or empty");
+    }
+    return passwordEncoder.encode(password);
   }
 }
