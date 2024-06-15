@@ -1,0 +1,11 @@
+CREATE TABLE auth_tokens (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  token VARCHAR(255) NOT NULL,
+  expires_at TIMESTAMP NOT NULL,
+  user_id BIGINT NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  INDEX idx_auth_tokens_user_id (user_id),
+  INDEX idx_auth_tokens_token (token)
+);
