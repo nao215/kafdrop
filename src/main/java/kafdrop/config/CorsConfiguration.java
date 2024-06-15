@@ -59,7 +59,7 @@ public class CorsConfiguration {
   @Value("${cors.allowOrigins:*}")
   private String corsAllowOrigins;
 
-  @Value("${cors.allowMethods:GET,POST,PUT,DELETE}")
+  @Value("${cors.allowMethods:GET,POST,PUT,DELETE,PATCH,OPTIONS}")
   private String corsAllowMethods;
 
   @Value("${cors.maxAge:3600}")

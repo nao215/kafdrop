@@ -1,5 +1,6 @@
 package kafdrop.model;
 
+import java.time.temporal.ChronoUnit;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -29,4 +30,28 @@ public class AuthTokenVO implements Serializable {
   private UserVO user;
 
   // Getters and setters omitted for brevity
+
+  public AuthTokenVO() {
+    this.createdAt = LocalDateTime.now();
+    this.updatedAt = this.createdAt;
+    // Set the default expiration to 24 hours from creation time
+    this.expiresAt = this.createdAt.plus(24, ChronoUnit.HOURS);
+  }
+
+  public void setToken(String token) {
+    this.token = token;
+  }
+
+  public String getToken() {
+    return token;
+  }
+
+  public LocalDateTime getExpiresAt() {
+    return expiresAt;
+  }
+
+  public void setExpiresAt(LocalDateTime expiresAt) {
+    this.expiresAt = expiresAt;
+  }
+  // Other getters and setters should be implemented as needed
 }

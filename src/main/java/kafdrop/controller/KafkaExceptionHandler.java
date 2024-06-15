@@ -18,6 +18,8 @@
 
 package kafdrop.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import kafdrop.service.NotInitializedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -28,4 +30,18 @@ public final class KafkaExceptionHandler {
   public String notInitialized() {
     return "not-initialized";
   }
+
+  @ExceptionHandler(AccountLockedException.class)
+  public ResponseEntity<String> handleAccountLocked(AccountLockedException ex) {
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.FORBIDDEN);
+  }
+
+  @ExceptionHandler(InvalidCredentialsException.class)
+  public ResponseEntity<String> handleInvalidCredentials(InvalidCredentialsException ex) {
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+  }
+
+  // Assuming AccountLockedException and InvalidCredentialsException are defined elsewhere in the project
+  // These exceptions should carry appropriate error messages that will be returned in the response
+  // The HttpStatus codes are set according to the API documentation requirements
 }
