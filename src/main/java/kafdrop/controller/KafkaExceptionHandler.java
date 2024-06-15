@@ -28,4 +28,13 @@ public final class KafkaExceptionHandler {
   public String notInitialized() {
     return "not-initialized";
   }
+
+  @ExceptionHandler(IllegalArgumentException.class)
+  public ModelAndView handleIllegalArgumentException(IllegalArgumentException e) {
+    final var model = Map.of("error", Map.of("message", e.getMessage()));
+    return new ModelAndView("error", model);
+  }
+
+  // Other methods and class members remain unchanged
+
 }

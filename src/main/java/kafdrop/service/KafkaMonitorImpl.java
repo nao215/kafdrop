@@ -377,6 +377,17 @@ public final class KafkaMonitorImpl implements KafkaMonitor {
     return consumerVos;
   }
 
+  @Override
+  public String hashPassword(String password) {
+    if (password == null || password.isEmpty()) {
+      throw new IllegalArgumentException("Password cannot be null or empty");
+    }
+    return passwordEncoder.encode(password);
+  }
+
+  // Other methods and class members remain unchanged
+
+}
   private static final class ConsumerGroupOffsets {
     final String groupId;
     final Map<TopicPartition, OffsetAndMetadata> offsets;

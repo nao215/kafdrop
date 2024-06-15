@@ -1,5 +1,6 @@
 package kafdrop.controller;
 
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -81,8 +82,7 @@ public final class MessageController {
   @PostMapping("/register")
   public String registerUser(@Valid @RequestBody UserVO user, BindingResult bindingResult) {
     if (bindingResult.hasErrors()) {
-      // Handle validation errors
-      // ...
+      // Return view with error messages
       return "redirect:/user/error";
     }
     String hashedPassword = kafkaMonitorImpl.hashPassword(user.getPassword());
@@ -90,11 +90,30 @@ public final class MessageController {
     user.setCreatedAt(LocalDateTime.now());
     user.setUpdatedAt(LocalDateTime.now());
     // Save the user to the database
-    // ...
+    // Assume a method saveUser(user) exists in KafkaMonitorImpl or another service class
+    kafkaMonitorImpl.saveUser(user);
     return "redirect:/user/success";
   }
 
   // Existing methods...
 
   // Rest of the MessageController class as provided in the current code...
+}
+
+// Assuming UserVO is defined elsewhere in the project
+class UserVO {
+  // Other fields...
+
+  @NotBlank(message = "{user.password.blank}")
+  private String password;
+
+  // Getters and setters...
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
 }
